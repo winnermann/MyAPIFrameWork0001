@@ -1,5 +1,12 @@
 package at.api;
 
+/**
+ * Класс с объектами
+ * username имя пользователя
+ * password пароль
+ * используется при Логине
+ * и Регистрации в тестах
+ */
 public class Credentials {
     private String username;
     private String password;

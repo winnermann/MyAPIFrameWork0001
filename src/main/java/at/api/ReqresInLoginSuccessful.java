@@ -1,9 +1,7 @@
 package at.api;
 
-//import at.common.Config;
 import at.common.ConfigReqresInLoginSuccessful;
 import io.qameta.allure.Step;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.*;
@@ -39,10 +37,13 @@ public class ReqresInLoginSuccessful {
         String token;
 
 
+        //Объект credentials из файла Credentials.java
+        //устанавливает username,password из файла configReqresInLoginSuccessful.properties
         Credentials credentials = new Credentials();
         credentials.setUsername(ConfigReqresInLoginSuccessful.getSDCDefaultUsername());
         credentials.setPassword(ConfigReqresInLoginSuccessful.getSDCDefaultPassword());
 
+        //Объект token из файла AuthenticationToken.java
         AuthenticationToken authenticationToken =
 
                 given()
@@ -58,22 +59,9 @@ public class ReqresInLoginSuccessful {
                         .log().all()
                         .extract()
                         .body().as(AuthenticationToken.class);
+        //получаем token
         token = authenticationToken.getToken();
         System.out.println(token);
-
-//        String sessionID;
-//        sessionID = expect().statusCode(200)
-//                .when().get("/login")
-//                .sessionId();
-//
-//        sessionId = expect().
-//                statusCode(302).
-//                given().
-//                param("j_username", username).
-//                param("j_password", password).
-//                cookie("JSESSIONID", sessionID).
-//                post("j_security_check").
-//                sessionId();
     }
 
 }

@@ -58,7 +58,6 @@ public class ReqresInLoginUnsuccessful {
                         .log().all()
                         .extract()
                         .body().as(AuthenticationToken.class);
-
     }
 
 }
