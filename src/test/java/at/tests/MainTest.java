@@ -15,6 +15,7 @@ public class MainTest {
 
     public void testCases(){
         Login2.login2();
+        PlaceGoatAPI.searchGoat();
         StarWarsAPI.searchLukeSkywalker();
         StarWarsAPI.searchYavinIV();
         StarWarsAPI.searchDeathStar();
