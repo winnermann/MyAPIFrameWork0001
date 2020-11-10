@@ -1,9 +1,10 @@
 package at.api;
 
 //import at.common.Config;
+import at.api.model.AuthenticationToken;
+import at.api.model.Credentials;
 import at.common.ConfigReqresInLoginUnsuccessful;
 import io.qameta.allure.Step;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.*;

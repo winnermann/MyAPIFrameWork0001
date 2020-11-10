@@ -1,4 +1,4 @@
-package at.api;
+package at.api.model;
 
 /**
  * Класс с объектом token, используется при Логине

@@ -1,4 +1,4 @@
-package at.api;
+package at.api.model;
 
 /**
  * Класс с объектами

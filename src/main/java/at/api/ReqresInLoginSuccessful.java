@@ -1,5 +1,7 @@
 package at.api;
 
+import at.api.model.AuthenticationToken;
+import at.api.model.Credentials;
 import at.common.ConfigReqresInLoginSuccessful;
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;

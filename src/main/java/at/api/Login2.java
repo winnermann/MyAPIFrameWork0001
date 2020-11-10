@@ -1,4 +1,7 @@
 package at.api;
+import at.api.model.AuthenticationToken;
+import at.api.model.Credentials;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
