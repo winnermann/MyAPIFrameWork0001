@@ -7,6 +7,8 @@ import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import java.util.HashMap;
+
 import static io.restassured.RestAssured.*;
 import static io.restassured.RestAssured.expect;
 import static org.hamcrest.Matchers.containsString;
@@ -53,7 +55,7 @@ public class SDCTests {
                 sessionId();
     }
 
-    @Step("")
+    @Step("Изменить статус 'Не сверено' на 'Сверено' с внесением 'Комментария'")
     public static void changeStatusAndComment(){
         ChangeStatusAndCommentSerialization csacs = new ChangeStatusAndCommentSerialization();
         csacs.setId("id", 123456);
@@ -74,7 +76,7 @@ public class SDCTests {
 
     }
 
-    @Step("")
+    @Step("Изменить статус 'Не сверено' на 'Сверено' без внесения 'Комментария'")
     public static void changeStatusWithoutComment(){
         ChangeStatusWithoutCommentSerialization cswcs = new ChangeStatusWithoutCommentSerialization();
         cswcs.setId("id", 123456);
@@ -92,7 +94,26 @@ public class SDCTests {
                 statusCode(201).
                 body(containsString("{\"message\":\"Изменения сохранены\",\"msg\":\"Изменения сохранены\",\"success\":true}")).
                 log().all();
+    }
 
+    @Step("Выгрузить отчет в EXCEL")
+    public static void downloadReport(){
+        HashMap map = new HashMap();
+        map.put("reportFormat", "[{\"id\":\"subvision_shortName\",\"type\":\"String\"}]");
+        map.put("filter", "[{\"comparison\":\"gte\",\"field\":\"reconcilationDate\"}]");
+        map.put("sort", "[]");
+        map.put("reportFormat", "EXCEL");
+        Response response;
+        response = given().
+                contentType(ContentType.JSON).
+                with().
+                body(map).
+                when().
+                post("/atm/reconcilation/report.do");
+        response.then().
+                statusCode(201).
+                body(containsString("{\"message\":\"Отчет создан\",\"success\":true,\"msg\":\"Отчет создан\"}")).
+                log().all();
     }
 
 
