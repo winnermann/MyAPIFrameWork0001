@@ -164,6 +164,7 @@ public class SDCTests {
                 statusCode(200).
                 body("results.subvision.recincilationProgress[0]", equalTo("BARNAUL")).
                 body("results.subvision.recincilationProgress[24]", equalTo("MOSCOW")).
+                body("success", equalTo(true)).
                 log().all();
 
     }
