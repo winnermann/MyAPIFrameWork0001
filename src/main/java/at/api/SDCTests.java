@@ -1,0 +1,99 @@
+package at.api;
+
+import at.api.model.ChangeStatusAndCommentSerialization;
+import at.api.model.ChangeStatusWithoutCommentSerialization;
+import at.common.Config;
+import io.qameta.allure.Step;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+
+import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.expect;
+import static org.hamcrest.Matchers.containsString;
+
+public class SDCTests {
+    public SDCTests() {
+    }
+
+
+    /**
+     * Вход с параметрами, указанными в конфиге
+     */
+
+    public static void login(){
+        login(Config.getSDCDefaultUsername(), Config.getSDCDefaultPassword());
+
+    }
+
+    /**
+     * Войти
+     * Во время этого действия будет установлен JSessionID
+     * @param username имя пользователя
+     * @param password пароль
+     */
+
+    @Step("Войти")
+    public static void login(String username, String password){
+        baseURI = Config.getSDCHost();
+        port = Config.getSDCPort();
+        basePath = Config.getSDCPath();
+
+        String sessionID;
+        sessionID = expect().statusCode(200)
+                .when().get("/login")
+                .sessionId();
+
+        sessionId = expect().
+                statusCode(302).
+                given().
+                param("j_username", username).
+                param("j_password", password).
+                cookie("JSESSIONID", sessionID).
+                post("j_security_check").
+                sessionId();
+    }
+
+    @Step("")
+    public static void changeStatusAndComment(){
+        ChangeStatusAndCommentSerialization csacs = new ChangeStatusAndCommentSerialization();
+        csacs.setId("id", 123456);
+        csacs.setDeviceId("deviceId", "398102");
+        csacs.setTerminalType("terminalType", "CASH_OUT");
+        csacs.setComment("comment", "Привет тестировщики1!;%:?*");
+        Response response;
+        response = given().
+                contentType(ContentType.JSON).
+                with().
+                body(csacs).
+                when().
+                post("/atm/reconcilation_detail/update.do");
+        response.then().
+                statusCode(201).
+                body(containsString("{\"message\":\"Изменения сохранены\",\"msg\":\"Изменения сохранены\",\"success\":true}")).
+                log().all();
+
+    }
+
+    @Step("")
+    public static void changeStatusWithoutComment(){
+        ChangeStatusWithoutCommentSerialization cswcs = new ChangeStatusWithoutCommentSerialization();
+        cswcs.setId("id", 123456);
+        cswcs.setDeviceId("deviceId", "398102");
+        cswcs.setTerminalType("terminalType", "CASH_OUT");
+        cswcs.setComment("comment", null);
+        Response response;
+        response = given().
+                contentType(ContentType.JSON).
+                with().
+                body(cswcs).
+                when().
+                post("/atm/reconcilation_detail/update.do");
+        response.then().
+                statusCode(201).
+                body(containsString("{\"message\":\"Изменения сохранены\",\"msg\":\"Изменения сохранены\",\"success\":true}")).
+                log().all();
+
+    }
+
+
+}
