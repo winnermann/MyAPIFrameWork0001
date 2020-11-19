@@ -43,6 +43,6 @@ public class ConfigJDBC3 {
     }
 
     public static String getJDBCPath(){
-        return configJDBC3.getProperty("jdbc.path");
+        return configJDBC3.getProperty("jdbc.servicename");
     }
 }
