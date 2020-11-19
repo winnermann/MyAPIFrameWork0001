@@ -6,6 +6,8 @@ import io.qameta.allure.Step;
 import java.sql.*;
 
 import static io.restassured.RestAssured.*;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class JDBCExample3 {
 
@@ -19,6 +21,11 @@ public class JDBCExample3 {
         //Connection con = DriverManager.getConnection("jdbc:oracle:thin@localhost:1521/orcl", "SYS", "1");
         //Connection con = DriverManager.getConnection("jdbc:oracle:thin@localhost:1521/orcl", "SYS as sysdba", "1");
         Connection con = DriverManager.getConnection(baseURI+port+basePath, ConfigJDBC3.getJDBCDefaultUsername(), ConfigJDBC3.getJDBCDefaultPassword());
+
+        //Проверяет что соединение успешно
+        assertTrue(con.isValid(1), "Connection success");
+        //Проверяет что соединение не закрыто
+        assertFalse(con.isClosed(), "Connection is not closed");
 
         //Создать выражение
         Statement stmt = con.createStatement();
@@ -42,4 +49,5 @@ public class JDBCExample3 {
         System.out.println("program is exited");
 
     }
+
 }
