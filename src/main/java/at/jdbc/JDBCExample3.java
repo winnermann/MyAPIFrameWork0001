@@ -3,10 +3,7 @@ package at.jdbc;
 import at.common.ConfigJDBC3;
 import io.qameta.allure.Step;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import static io.restassured.RestAssured.*;
 
@@ -29,6 +26,16 @@ public class JDBCExample3 {
         //Execute sql Statement
         String s = "select * from printer";
         stmt.executeQuery(s);
+
+        //Получает ответ из базы данных Oracle в переменную resultSet
+        ResultSet resultSet = stmt.getResultSet();
+
+        //Выводит номер столбца по названию столбца в базе данных Oracle
+        System.out.println(resultSet.findColumn("code"));
+        System.out.println(resultSet.findColumn("model"));
+        System.out.println(resultSet.findColumn("color"));
+        System.out.println(resultSet.findColumn("type"));
+        System.out.println(resultSet.findColumn("price"));
 
         //Закрыть подключение
         con.close();
