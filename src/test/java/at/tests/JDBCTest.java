@@ -1,8 +1,6 @@
 package at.tests;
 
-import at.jdbc.JDBCExample1;
-import at.jdbc.JDBCExample2;
-import at.jdbc.JDBCExample3;
+import at.jdbc.JDBCExample4;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;
@@ -21,6 +19,9 @@ public class JDBCTest {
     public void testCasesJDBC() throws SQLException {
         //JDBCExample1.firsJDBCRequest();
         //JDBCExample2.firsJDBCRequest2();
-        JDBCExample3.firsJDBCRequest();
+        //JDBCExample3.firsJDBCRequest();
+        JDBCExample4.shouldGetJdbcConnection();
+        JDBCExample4.dataBaseOperations();
+        JDBCExample4.connectionClose();
     }
 }
