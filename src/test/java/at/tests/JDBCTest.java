@@ -20,11 +20,24 @@ public class JDBCTest {
         //JDBCExample1.firsJDBCRequest();
         //JDBCExample2.firsJDBCRequest2();
         //JDBCExample3.firsJDBCRequest();
+
+
+
         JDBCExample4.shouldGetJdbcConnection();
+
+
         JDBCExample4.createDataBasePrinter();
         JDBCExample4.insertDataBasePrinterCells();
         JDBCExample4.dataBaseOperations();
+        JDBCExample4.updateDataBasePrinterCells();
+        JDBCExample4.deleteLine6FromDataBasePrinter();
+        JDBCExample4.deleteLine5FromDataBasePrinter();
+        JDBCExample4.insertLine6ToDataBasePrinter();
+        JDBCExample4.insertLine5ToDataBasePrinter();
+
         JDBCExample4.dropDataBasePrinter();
+
+
         JDBCExample4.connectionClose();
     }
 }

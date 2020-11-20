@@ -77,18 +77,18 @@ public class JDBCExample4 {
     }
 
 
-
     @Step("Операции с базой данных")
     public static void dataBaseOperations() throws SQLException {
         //Создать выражение
         Statement stmt = getNewConnection().createStatement();
 
         //Execute sql Statement
-        String s = "select * from printer2";
+        String s = "select * from printer";
         stmt.executeQuery(s);
 
         //Получает ответ из базы данных Oracle в переменную resultSet
         ResultSet resultSet = stmt.getResultSet();
+
 
         //Выводит номер столбца по названию столбца в базе данных Oracle
         System.out.println(resultSet.findColumn("code"));
@@ -151,11 +151,83 @@ public class JDBCExample4 {
         System.out.println(type);
     }
 
+    @Step("Обновить данные в строке с кодом 6 в таблице 'printer2'")
+    public static void updateDataBasePrinterCells() throws SQLException{
+        String printerTableUpdateLine6Query = "UPDATE printer2 " +
+                "SET model=1, color ='Z', type='S', price = NULL WHERE code=6";
+        executeUpdate(printerTableUpdateLine6Query);
+
+        /**
+         * Обработаем результат
+         * Проверка результатов из таблицы
+         * способом RowSet
+         */
+
+        JdbcRowSet jdbcRs = new JdbcRowSetImpl(getNewConnection());
+        jdbcRs.setCommand("select * from printer2");
+        jdbcRs.execute();
+        jdbcRs.next();
+        jdbcRs.next();
+        jdbcRs.next();
+        jdbcRs.next();
+        jdbcRs.next();
+        jdbcRs.next();
+
+        int code = jdbcRs.getInt("code");
+        assertEquals(6, code);
+        System.out.println(code);
+
+        int model = jdbcRs.getInt("model");
+        assertEquals(1, model);
+        System.out.println(model);
+
+        String color = jdbcRs.getString("color");
+        assertEquals("Z", color);
+        System.out.println(color);
+
+        String type = jdbcRs.getString("type");
+        assertEquals("S", type);
+        System.out.println(type);
+
+        int price = jdbcRs.getInt("price");
+        assertEquals(0, price);
+        System.out.println(price);
+
+    }
+
+    @Step("Удалить строку из таблицы 'printer2' с ценой price=null")
+    public static void deleteLine6FromDataBasePrinter() throws SQLException{
+        String printerTableDeleteLine6Query = "DELETE FROM printer2 WHERE price IS NULL";
+        executeUpdate(printerTableDeleteLine6Query);
+    }
+
+    @Step("Удалить строку из таблицы 'printer2' с ценой price=null")
+    public static void deleteLine5FromDataBasePrinter() throws SQLException{
+        String printerTableDeleteLine5Query = "DELETE FROM printer2 WHERE code > 4";
+        executeUpdate(printerTableDeleteLine5Query);
+    }
+
+    @Step("Добавить строку 6 в таблицу 'printer2'")
+    public static void insertLine6ToDataBasePrinter() throws SQLException {
+
+        String printerTableLine6Query = "INSERT INTO printer2(code, model, color, type, price) " +
+                "VALUES (6, 1288, 'n', 'Laser', 400)";
+        executeUpdate(printerTableLine6Query);
+    }
+
+    @Step("Добавить строку 5 в таблицу 'printer2'")
+    public static void insertLine5ToDataBasePrinter() throws SQLException {
+
+        String printerTableLine5Query = "INSERT INTO printer2(code, model, color, type, price) " +
+                "VALUES (5, 1408, 'n', 'Matrix', 270)";
+        executeUpdate(printerTableLine5Query);
+
+    }
+
     @Step("Удалить таблицу 'printer2'")
     public static void dropDataBasePrinter() throws SQLException{
         String printerTableDropQuery = "DROP TABLE printer2";
         executeUpdate(printerTableDropQuery);
-
     }
 
     @Step("Закрыть подключение")
@@ -164,6 +236,5 @@ public class JDBCExample4 {
         getNewConnection().close();
         System.out.println("program is exited");
     }
-
 
 }
