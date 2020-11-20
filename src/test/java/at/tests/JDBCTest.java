@@ -21,7 +21,10 @@ public class JDBCTest {
         //JDBCExample2.firsJDBCRequest2();
         //JDBCExample3.firsJDBCRequest();
         JDBCExample4.shouldGetJdbcConnection();
+        JDBCExample4.createDataBasePrinter();
+        JDBCExample4.insertDataBasePrinterCells();
         JDBCExample4.dataBaseOperations();
+        JDBCExample4.dropDataBasePrinter();
         JDBCExample4.connectionClose();
     }
 }

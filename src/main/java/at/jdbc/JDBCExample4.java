@@ -33,13 +33,58 @@ public class JDBCExample4 {
         }
     }
 
+    private static int executeUpdate(String query) throws SQLException {
+        Statement statement = getNewConnection().createStatement();
+
+// Для Insert, Update, Delete
+
+        int result = statement.executeUpdate(query);
+        return result;
+    }
+
+    @Step("Создать пустую таблицу 'printer2'")
+    public static void createDataBasePrinter() throws SQLException{
+        String printerTableCreateQuery = "CREATE TABLE printer2" +
+                "(code INT, model VARCHAR(50), color CHAR(1), type VARCHAR(10), price INT)";
+        executeUpdate(printerTableCreateQuery);
+
+    }
+
+    @Step("Заполнить данными пустые ячейки в таблице 'printer2'")
+    public static void insertDataBasePrinterCells() throws SQLException {
+        String printerTableLine1Query = "INSERT INTO printer2(code, model, color, type, price) " +
+                "VALUES (1, 1276, 'n', 'Laser', 400)";
+        String printerTableLine2Query = "INSERT INTO printer2(code, model, color, type, price) " +
+                "VALUES (2, 1433, 'y', 'Jet', 270)";
+        String printerTableLine3Query = "INSERT INTO printer2(code, model, color, type, price) " +
+                "VALUES (3, 1434, 'y', 'Jet', 290)";
+
+        String printerTableLine4Query = "INSERT INTO printer2(code, model, color, type, price) " +
+                "VALUES (4, 1401, 'n', 'Matrix', 150)";
+
+        String printerTableLine5Query = "INSERT INTO printer2(code, model, color, type, price) " +
+                "VALUES (5, 1408, 'n', 'Matrix', 270)";
+
+        String printerTableLine6Query = "INSERT INTO printer2(code, model, color, type, price) " +
+                "VALUES (6, 1288, 'n', 'Laser', 400)";
+        executeUpdate(printerTableLine1Query);
+        executeUpdate(printerTableLine2Query);
+        executeUpdate(printerTableLine3Query);
+        executeUpdate(printerTableLine4Query);
+        executeUpdate(printerTableLine5Query);
+        executeUpdate(printerTableLine6Query);
+
+    }
+
+
+
     @Step("Операции с базой данных")
     public static void dataBaseOperations() throws SQLException {
         //Создать выражение
         Statement stmt = getNewConnection().createStatement();
 
         //Execute sql Statement
-        String s = "select * from printer";
+        String s = "select * from printer2";
         stmt.executeQuery(s);
 
         //Получает ответ из базы данных Oracle в переменную resultSet
@@ -104,6 +149,13 @@ public class JDBCExample4 {
 
         type = jdbcRs.getString("type");
         System.out.println(type);
+    }
+
+    @Step("Удалить таблицу 'printer2'")
+    public static void dropDataBasePrinter() throws SQLException{
+        String printerTableDropQuery = "DROP TABLE printer2";
+        executeUpdate(printerTableDropQuery);
+
     }
 
     @Step("Закрыть подключение")
