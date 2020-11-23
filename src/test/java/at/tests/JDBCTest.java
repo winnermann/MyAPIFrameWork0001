@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class JDBCTest {
 
     @Test
-    @Description(value = "API")
+    @Description(value = "JDBC")
     @Epic("Функциональные тесты")
     @Severity(value = SeverityLevel.NORMAL)
 
