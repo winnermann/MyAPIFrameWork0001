@@ -1,5 +1,6 @@
 package at.web;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -79,6 +80,35 @@ public class TheInternetHerokuAppUI {
         open("http://admin:admin@the-internet.herokuapp.com/digest_auth");
         element(By.cssSelector("#content h3")).shouldHave(text("Digest Auth"));
         element(By.cssSelector("#content p")).shouldHave(text("Congratulations! You must have the proper credentials."));
+    }
+
+    @Step("Drag and Drop")
+    public static void drugAndDrop(){
+        System.setProperty("selenide.browser", "chrome");
+        Configuration.browser = "chrome";
+        Configuration.startMaximized = true;
+        Configuration.timeout = 6000;
+        open("http://the-internet.herokuapp.com");
+
+        //Убедиться что на странице есть слова "Welcome to the-internet"
+        element(By.cssSelector("#content h1")).shouldHave(text("Welcome to the-internet"));
+        //Убедиться что ссылка содержит слова "Dropdown" и перейти по ссылке
+        element(By.cssSelector("#content li:nth-child(10) a")).shouldHave(text("Drag and Drop")).click();
+
+        //Первый вариант
+        //Проверяет что элемент КолонкаА содержит текст А
+        element(By.cssSelector("#column-a")).shouldHave(text("A"));
+        //Перетаскивает элемент КолонкаА на элемент КолонкаБ
+        $("#column-a").dragAndDropTo("#column-b");
+        //Проверяет что элемент КолонкаА содержит текст Б
+        element(By.cssSelector("#column-a")).shouldHave(text("B"));
+
+        //Второй вариант
+        //Проверяет что элемент КолонкаА содержит текст А
+        element(By.cssSelector("#column-a")).shouldHave(text("A"));
+        //Перетаскивает элемент КолонкаА на элемент КолонкаБ, убеждается что действие произошло и
+        //проверяет что элемент КолонкаА содержит текст Б
+        $("#column-a").dragAndDropTo("#column-b").should(appear).shouldHave(Condition.text("B"));
     }
 
     @Step("Dropdown: Выбрать из Dropdown menu сначала Option 2, а потом Option 1")
