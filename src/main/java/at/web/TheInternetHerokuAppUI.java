@@ -1,6 +1,7 @@
 package at.web;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -78,5 +79,34 @@ public class TheInternetHerokuAppUI {
         open("http://admin:admin@the-internet.herokuapp.com/digest_auth");
         element(By.cssSelector("#content h3")).shouldHave(text("Digest Auth"));
         element(By.cssSelector("#content p")).shouldHave(text("Congratulations! You must have the proper credentials."));
+    }
+
+    @Step("Dropdown: Выбрать из Dropdown menu сначала Option 2, а потом Option 1")
+    public static void dropDownMenu(){
+        //Открыть браузер
+        System.setProperty("selenide.browser", "chrome");
+        Configuration.browser = "chrome";
+        Configuration.startMaximized = true;
+        Configuration.timeout = 6000;
+        open("http://the-internet.herokuapp.com");
+
+        //Убедиться что на странице есть слова "Welcome to the-internet"
+        element(By.cssSelector("#content h1")).shouldHave(text("Welcome to the-internet"));
+        //Убедиться что ссылка содержит слова "Dropdown" и перейти по ссылке
+        element(By.cssSelector("#content li:nth-child(11) a")).shouldHave(text("Dropdown")).click();
+
+        //Выбрать из выпадающего меню
+        SelenideElement parentDiv = $("#dropdown");
+        // Find `<button>` element and `click()` on it
+        //Выбрать из выпадающего меню Option 2
+        parentDiv.find("option:nth-child(3)").scrollTo().click();
+        //проверяет что меню Option 2 выбрано
+        parentDiv.find("option:nth-child(3)").shouldHave(text("Option 2"));
+
+        //Выбрать из выпадающего меню Option 1
+        parentDiv.find("option:nth-child(2)").scrollTo().click();
+        //проверяет что меню Option 1 выбрано
+        parentDiv.find("option:nth-child(2)").shouldHave(text("Option 1"));
+
     }
 }

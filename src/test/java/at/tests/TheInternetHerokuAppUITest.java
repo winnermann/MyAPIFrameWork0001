@@ -18,5 +18,6 @@ public class TheInternetHerokuAppUITest {
         TheInternetHerokuAppUI.basicAuth();
         TheInternetHerokuAppUI.checkBox();
         TheInternetHerokuAppUI.digestAuthentication();
+        TheInternetHerokuAppUI.dropDownMenu();
     }
 }
