@@ -16,7 +16,7 @@ public class TheInternetHerokuAppUITest {
     public void testCases(){
         //TheInternetHerokuAppUI.openBrowser();
         TheInternetHerokuAppUI.basicAuth();
+        TheInternetHerokuAppUI.checkBox();
         TheInternetHerokuAppUI.digestAuthentication();
     }
-
 }
