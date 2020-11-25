@@ -21,7 +21,7 @@ public class TheInternetHerokuAppUITest {
         TheInternetHerokuAppUI.checkBox();
         TheInternetHerokuAppUI.digestAuthentication();
         //TheInternetHerokuAppUI.drugAndDrop();
-        //TheInternetHerokuAppUI.drugAndDropJavaScript();
+        TheInternetHerokuAppUI.drugAndDropJavaScript();
         DragAndDrop.dragAndDrop();
         TheInternetHerokuAppUI.dropDownMenu();
 

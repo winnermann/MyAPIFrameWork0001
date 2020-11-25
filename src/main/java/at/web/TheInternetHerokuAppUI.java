@@ -2,15 +2,14 @@ package at.web;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.google.common.io.Files;
 import io.qameta.allure.Step;
-import org.apache.commons.io.Charsets;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
@@ -122,29 +121,34 @@ public class TheInternetHerokuAppUI {
 
     @Step("Drag and Drop with JavaScript file")
     public static void drugAndDropJavaScript() throws IOException {
+        //Открыть браузер
         System.setProperty("selenide.browser", "chrome");
         Configuration.browser = "chrome";
         Configuration.startMaximized = true;
         Configuration.timeout = 6000;
-        open("http://the-internet.herokuapp.com");
+        open("http://the-internet.herokuapp.com/drag_and_drop");
 
-        //Убедиться что на странице есть слова "Welcome to the-internet"
-        element(By.cssSelector("#content h1")).shouldHave(text("Welcome to the-internet"));
-        //Убедиться что ссылка содержит слова "Dropdown" и перейти по ссылке
-        element(By.cssSelector("#content li:nth-child(10) a")).shouldHave(text("Drag and Drop")).click();
+        //Проверяет что элемент КолонкаА содержит текст А
+        element(By.cssSelector("#column-a")).shouldHave(text("A"));
 
+        //Создадим объект класса File
+        File dnd_javascript = new File("scripts/dnd.js");
+        FileReader reader = new FileReader(dnd_javascript);
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        StringBuilder builder = new StringBuilder();
+        bufferedReader.lines().forEach(
+                o->builder.append(o).append('\n')
+        );
 
-        String fileContents = Files.toString( new File( "native_js_drag_and_drop_helper.js" ), Charsets.UTF_8 );
-        JavascriptExecutor js = ( JavascriptExecutor ) driver;
-        js.executeScript( fileContents + "Drag('#column-1').simulate('drop-container');" );
+        String javaScript = builder.toString();
+        javaScript = javaScript + " simulateDragDrop(document.getElementById('column-a'),document.getElementById('column-b'));";
+        Selenide.executeJavaScript(javaScript);
 
+        //Проверяет что элемент КолонкаА содержит текст Б
+        element(By.cssSelector("#column-a")).shouldHave(text("B"));
 
-        WebElement ele_drag = $("#column-a");
-        WebElement ele_drop = $("#column-b");
-
-
-
-
+        //Делает паузу и браузер не закрывается
+        //Thread.sleep(500000);
     }
 
     @Step("Dropdown: Выбрать из Dropdown menu сначала Option 2, а потом Option 1")

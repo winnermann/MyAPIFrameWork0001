@@ -24,6 +24,9 @@ public class DragAndDrop {
         Configuration.timeout = 6000;
         open("http://the-internet.herokuapp.com/drag_and_drop");
 
+        //Проверяет что элемент КолонкаА содержит текст А
+        element(By.cssSelector("#column-a")).shouldHave(text("A"));
+
         //Создадим объект класса File
         File dnd_javascript = new File("scripts/dnd.js");
         FileReader reader = new FileReader(dnd_javascript);
@@ -39,6 +42,7 @@ public class DragAndDrop {
 
         //Проверяет что элемент КолонкаА содержит текст Б
         element(By.cssSelector("#column-a")).shouldHave(text("B"));
+
         //Делает паузу и браузер не закрывается
         //Thread.sleep(500000);
 
