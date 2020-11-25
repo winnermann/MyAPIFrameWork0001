@@ -3,13 +3,22 @@ package at.web;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
+import com.google.common.io.Files;
 import io.qameta.allure.Step;
+import org.apache.commons.io.Charsets;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+
+import java.io.File;
+import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TheInternetHerokuAppUI {
+    private static Object driver;
+
     @Step("Step Basic Auth (user and pass: admin): Авторизация")
     public static void basicAuth(){
         //Открыть браузер
@@ -111,6 +120,33 @@ public class TheInternetHerokuAppUI {
         $("#column-a").dragAndDropTo("#column-b").should(appear).shouldHave(Condition.text("B"));
     }
 
+    @Step("Drag and Drop with JavaScript file")
+    public static void drugAndDropJavaScript() throws IOException {
+        System.setProperty("selenide.browser", "chrome");
+        Configuration.browser = "chrome";
+        Configuration.startMaximized = true;
+        Configuration.timeout = 6000;
+        open("http://the-internet.herokuapp.com");
+
+        //Убедиться что на странице есть слова "Welcome to the-internet"
+        element(By.cssSelector("#content h1")).shouldHave(text("Welcome to the-internet"));
+        //Убедиться что ссылка содержит слова "Dropdown" и перейти по ссылке
+        element(By.cssSelector("#content li:nth-child(10) a")).shouldHave(text("Drag and Drop")).click();
+
+
+        String fileContents = Files.toString( new File( "native_js_drag_and_drop_helper.js" ), Charsets.UTF_8 );
+        JavascriptExecutor js = ( JavascriptExecutor ) driver;
+        js.executeScript( fileContents + "Drag('#column-1').simulate('drop-container');" );
+
+
+        WebElement ele_drag = $("#column-a");
+        WebElement ele_drop = $("#column-b");
+
+
+
+
+    }
+
     @Step("Dropdown: Выбрать из Dropdown menu сначала Option 2, а потом Option 1")
     public static void dropDownMenu(){
         //Открыть браузер
@@ -139,4 +175,5 @@ public class TheInternetHerokuAppUI {
         parentDiv.find("option:nth-child(2)").shouldHave(text("Option 1"));
 
     }
+
 }
