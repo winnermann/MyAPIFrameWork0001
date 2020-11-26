@@ -2,6 +2,7 @@ package at.tests;
 
 import at.web.DragAndDrop;
 import at.web.TheInternetHerokuAppUI;
+import at.web.Upload;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;
@@ -24,7 +25,7 @@ public class TheInternetHerokuAppUITest {
         TheInternetHerokuAppUI.drugAndDropJavaScript();
         DragAndDrop.dragAndDrop();
         TheInternetHerokuAppUI.dropDownMenu();
-
-
+        TheInternetHerokuAppUI.uploadFile();
+        Upload.uploadFile();
     }
 }
