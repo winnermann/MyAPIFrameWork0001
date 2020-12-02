@@ -5,12 +5,10 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -178,6 +176,30 @@ public class TheInternetHerokuAppUI {
         //проверяет что меню Option 1 выбрано
         parentDiv.find("option:nth-child(2)").shouldHave(text("Option 1"));
 
+    }
+
+    @Step("File Download: Загрузка файла c сервера")
+    public static void downloadFile(){
+        //Открыть браузер
+        System.setProperty("selenide.browser", "chrome");
+        Configuration.browser = "chrome";
+        Configuration.startMaximized = true;
+        Configuration.timeout = 6000;
+        open("http://the-internet.herokuapp.com/download");
+
+        //Производит загрузку файла some-file.txt с сервера в папку build/downloads
+        try {
+            element(By.xpath("//a[contains(text(),'some-file.txt')]")).download();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //Удаляет папку downloads с загруженным файлом text.txt
+        try {
+            FileUtils.deleteDirectory(new File("build/downloads"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Step("Upload: Загрузка файла на сервер")

@@ -23,6 +23,7 @@ public class TheInternetHerokuAppUITest {
 //        TheInternetHerokuAppUI.drugAndDropJavaScript();
 //        DragAndDrop.dragAndDrop();
 //        TheInternetHerokuAppUI.dropDownMenu();
+//        TheInternetHerokuAppUI.downloadFile();
 //        TheInternetHerokuAppUI.uploadFile();
 //        Upload.uploadFile();
         Download.downloadFile();

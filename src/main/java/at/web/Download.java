@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import java.io.File;
 import java.io.IOException;
 
-import static com.codeborne.selenide.Selenide.element;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class Download {
@@ -21,23 +21,10 @@ public class Download {
         Configuration.timeout = 6000;
         open("http://the-internet.herokuapp.com/download");
 
-        //можно скачивать файлы с помощью встроенного в селенид прокси-сервера
-        //включим встроенный в селенид прокси-сервер
-//        Configuration.proxyEnabled = true;
-//        Configuration.fileDownload = PROXY;
+        //Производит загрузку файла some-file.txt с сервера в папку build/downloads
+        File report = $(By.xpath("//a[contains(text(),'some-file.txt')]")).download();
 
-        //Создает папку в которую будет скачан файл
-        //Configuration.fileDownload = FOLDER;
-        //Configuration.reportsFolder = "download";
-
-        //$("#content > div > a:nth-child(16)").download();
-
-        //Производит загрузку файла text.txt с сервера в папку build/downloads
-        element(By.xpath("//a[contains(text(),'text.txt')]")).download();
-
-        //File report = $("#content > div > a:nth-child(16)").download();
-
-        //Удаляет папку downloads с загруженным файлом text.txt
+        //Удаляет папку downloads с загруженным файлом some-file.txt
         FileUtils.deleteDirectory(new File("build/downloads"));
     }
 }
