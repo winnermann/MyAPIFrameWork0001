@@ -7,6 +7,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
 import java.io.*;
 
@@ -179,7 +180,7 @@ public class TheInternetHerokuAppUI {
     }
 
     @Step("File Download: Загрузка файла c сервера")
-    public static void downloadFile(){
+    public static void downloadFile() throws IOException {
         //Открыть браузер
         System.setProperty("selenide.browser", "chrome");
         Configuration.browser = "chrome";
@@ -188,18 +189,18 @@ public class TheInternetHerokuAppUI {
         open("http://the-internet.herokuapp.com/download");
 
         //Производит загрузку файла some-file.txt с сервера в папку build/downloads
-        try {
-            element(By.xpath("//a[contains(text(),'some-file.txt')]")).download();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        File report = element(By.xpath("//a[contains(text(),'some-file.txt')]")).download();
+
+        //Проверяет, что файл действительно скачан с сервера
+        Assert.assertEquals(report.getName(), "some-file.txt");
+
+        //Выводит в консоль весь путь до файла
+        System.out.println(report + " Путь до файла");
+        //Выводит в консоль только название файла
+        System.out.println(report.getName()+" Имя файла");
 
         //Удаляет папку downloads с загруженным файлом text.txt
-        try {
-            FileUtils.deleteDirectory(new File("build/downloads"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileUtils.deleteDirectory(new File("build/downloads"));
     }
 
     @Step("Upload: Загрузка файла на сервер")
