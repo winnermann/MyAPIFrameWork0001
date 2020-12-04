@@ -1,6 +1,6 @@
 package at.tests;
 
-import at.web.AutomationpracticeUI;
+import at.web.selenide.AutomationpracticeUI;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;

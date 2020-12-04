@@ -1,9 +1,9 @@
 package at.tests;
 
-import at.web.Download;
-import at.web.DragAndDrop;
-import at.web.TheInternetHerokuAppUI;
-import at.web.Upload;
+import at.web.selenide.Download;
+import at.web.selenide.DragAndDrop;
+import at.web.selenide.TheInternetHerokuAppUI;
+import at.web.selenide.Upload;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;
