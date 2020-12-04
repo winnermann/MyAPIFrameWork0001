@@ -13,3 +13,5 @@ allure-results/
 
 #Дамп данных при ошибках JVM. На всякий случай.
 hs_err_pid*
+
+debug.log
