@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
+import java.util.concurrent.TimeUnit;
+
 public class AutomationpracticeSeleniumUI {
     public static void login(){
         //Установить в настройки путь к драйверу
@@ -16,6 +18,9 @@ public class AutomationpracticeSeleniumUI {
 
         //Установить максимальный размер окна браузера
         driver.manage().window().maximize();
+
+        //Ожидает открытия окна 10 секунд
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         //Откравает браузер
         driver.get("http://automationpractice.com");
