@@ -1,5 +1,8 @@
 package at.web.selenium;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
@@ -22,6 +25,23 @@ public class AutomationpracticeSeleniumUI {
 
         //Проверяет, что заголовок страницы правильный
         Assert.assertTrue(title.equals("My Store"));
+
+        //Нажать на кнопку "Sign in"
+        WebElement element = driver.findElement(By.cssSelector("#header div.header_user_info a"));
+        element.click();
+
+        //Заполняет поле email невалидным адресом
+        WebElement emailField = driver.findElementByCssSelector("#email");
+        emailField.sendKeys("admin");
+
+        //Заполняет поле пароль и нажимает клавишу Enter
+        WebElement passwordField = driver.findElementByCssSelector("#passwd");
+        passwordField.sendKeys("123456");
+        passwordField.sendKeys(Keys.ENTER);
+
+        //Проверяет, что отобразилось сообщение "Invalid email address."
+        WebElement message = driver.findElement(By.xpath("//li[contains(text(),'Invalid email address.')]"));
+        message.getText().equals("Invalid email address.");
 
         //Закрывает драйвер
         driver.quit();

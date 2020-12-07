@@ -21,6 +21,7 @@ public class AutomationpracticeUI {
         System.out.println(Selenide.title());
         //Проверяет, что заголовок страницы правильный
         Assert.assertTrue(Selenide.title().equals("My Store"));
+        //Нажать на кнопку "Sign in"
         $("#header div.header_user_info a").shouldHave(Condition.text("Sign in")).click();
         //Заполняет поле email невалидным адресом
         $("#email").setValue("admin");
