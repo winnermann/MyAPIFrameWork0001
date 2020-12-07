@@ -15,7 +15,6 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TheInternetHerokuAppUI {
-    private static Object driver;
 
     @Step("Step Basic Auth (user and pass: admin): Авторизация")
     public static void basicAuth(){

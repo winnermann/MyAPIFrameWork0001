@@ -14,6 +14,9 @@ public class AutomationpracticeSeleniumUI {
         //Инициализирует Вэб драйвер
         ChromeDriver driver = new ChromeDriver();
 
+        //Установить максимальный размер окна браузера
+        driver.manage().window().maximize();
+
         //Откравает браузер
         driver.get("http://automationpractice.com");
 
