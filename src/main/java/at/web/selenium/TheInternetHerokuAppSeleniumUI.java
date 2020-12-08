@@ -1,7 +1,6 @@
 package at.web.selenium;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
@@ -149,7 +148,6 @@ public class TheInternetHerokuAppSeleniumUI {
         menuDragAndDrop.getText().equals("Drag and Drop");
         menuDragAndDrop.click();
 
-        //Первый вариант
         //Проверяет что элемент КолонкаА содержит текст А
         WebElement draggable = driver.findElement(By.cssSelector("#column-a"));
         draggable.getText().equals("A");
@@ -171,14 +169,19 @@ public class TheInternetHerokuAppSeleniumUI {
     @Step("Drag and Drop with JavaScript file")
     public static void drugAndDropJavaScript() throws IOException {
         //Открыть браузер
-        System.setProperty("selenide.browser", "chrome");
-        Configuration.browser = "chrome";
-        Configuration.startMaximized = true;
-        Configuration.timeout = 6000;
-        open("http://the-internet.herokuapp.com/drag_and_drop");
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+        ChromeDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://the-internet.herokuapp.com/drag_and_drop");
 
         //Проверяет что элемент КолонкаА содержит текст А
-        element(By.cssSelector("#column-a")).shouldHave(text("A"));
+        WebElement draggable = driver.findElement(By.cssSelector("#column-a"));
+        draggable.getText().equals("A");
+
+        //Проверяет что элемент КолонкаБ содержит текст Б
+        WebElement target = driver.findElement(By.cssSelector("#column-b"));
+        target.getText().equals("B");
 
         //Создадим объект класса File
         File dnd_javascript = new File("scripts/dnd.js");
@@ -191,13 +194,16 @@ public class TheInternetHerokuAppSeleniumUI {
 
         String javaScript = builder.toString();
         javaScript = javaScript + " simulateDragDrop(document.getElementById('column-a'),document.getElementById('column-b'));";
-        Selenide.executeJavaScript(javaScript);
+        driver.executeScript(javaScript);
 
         //Проверяет что элемент КолонкаА содержит текст Б
-        element(By.cssSelector("#column-a")).shouldHave(text("B"));
+        draggable.getText().equals("B");
 
         //Делает паузу и браузер не закрывается
         //Thread.sleep(500000);
+
+        //Закрывает драйвер
+        driver.quit();
     }
 
     @Step("Dropdown: Выбрать из Dropdown menu сначала Option 2, а потом Option 1")
