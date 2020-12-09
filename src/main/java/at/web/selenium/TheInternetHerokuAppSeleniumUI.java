@@ -1,19 +1,21 @@
 package at.web.selenium;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.codeborne.selenide.Condition.text;
@@ -209,54 +211,76 @@ public class TheInternetHerokuAppSeleniumUI {
     @Step("Dropdown: Выбрать из Dropdown menu сначала Option 2, а потом Option 1")
     public static void dropDownMenu(){
         //Открыть браузер
-        System.setProperty("selenide.browser", "chrome");
-        Configuration.browser = "chrome";
-        Configuration.startMaximized = true;
-        Configuration.timeout = 6000;
-        open("http://the-internet.herokuapp.com");
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+        ChromeDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://the-internet.herokuapp.com");
 
         //Убедиться что на странице есть слова "Welcome to the-internet"
-        element(By.cssSelector("#content h1")).shouldHave(text("Welcome to the-internet"));
+        WebElement messageWelcome = driver.findElement(By.cssSelector("#content h1"));
+        messageWelcome.getText().equals("Welcome to the-internet");
         //Убедиться что ссылка содержит слова "Dropdown" и перейти по ссылке
-        element(By.cssSelector("#content li:nth-child(11) a")).shouldHave(text("Dropdown")).click();
+        WebElement menuDropdown = driver.findElement(By.cssSelector("#content li:nth-child(11) a"));
+        menuDropdown.getText().equals("Dropdown");
+        menuDropdown.click();
 
         //Выбрать из выпадающего меню
-        SelenideElement parentDiv = $("#dropdown");
-        // Find `<button>` element and `click()` on it
-        //Выбрать из выпадающего меню Option 2
-        parentDiv.find("option:nth-child(3)").scrollTo().click();
-        //проверяет что меню Option 2 выбрано
-        parentDiv.find("option:nth-child(3)").shouldHave(text("Option 2"));
+        Select dropdown = new Select(driver.findElement(By.cssSelector("#dropdown")));
 
+        //Вариант 1
+        //Выбрать из выпадающего меню Option 2
+        dropdown.selectByIndex(2);
         //Выбрать из выпадающего меню Option 1
-        parentDiv.find("option:nth-child(2)").scrollTo().click();
-        //проверяет что меню Option 1 выбрано
-        parentDiv.find("option:nth-child(2)").shouldHave(text("Option 1"));
+        dropdown.selectByIndex(1);
+
+        //Вариант 2
+        //Выбрать из выпадающего меню Option 2
+        dropdown.selectByValue("2");
+        //Выбрать из выпадающего меню Option 1
+        dropdown.selectByValue("1");
+
+        //Вариант 3
+        //Выбрать из выпадающего меню Option 2
+        dropdown.selectByVisibleText("Option 2");
+        //Выбрать из выпадающего меню Option 1
+        dropdown.selectByVisibleText("Option 1");
+
+        //Закрывает драйвер
+        driver.quit();
 
     }
 
     @Step("File Download: Загрузка файла c сервера")
-    public static void downloadFile() throws IOException {
+    public static void downloadFile() throws IOException, InterruptedException {
         //Открыть браузер
-        System.setProperty("selenide.browser", "chrome");
-        Configuration.browser = "chrome";
-        Configuration.startMaximized = true;
-        Configuration.timeout = 6000;
-        open("http://the-internet.herokuapp.com/download");
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+        //Создает переменную downloadFilePath с путем к папке для загрузки файла
+        String downloadFilePath = "D:\\SpringStudy\\MyAPIFrameWork0001\\build\\downloads";
+        HashMap<String, Object> chromePref = new HashMap<>();
+        chromePref.put("profile.default_content_settings.popups", 0);
+        //Устанавливает путь из переменной downloadFilePath для загрузки файла
+        chromePref.put("download.default_directory", downloadFilePath);
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("prefs", chromePref);
+        ChromeDriver driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://the-internet.herokuapp.com/download");
 
         //Производит загрузку файла some-file.txt с сервера в папку build/downloads
-        File report = element(By.xpath("//a[contains(text(),'some-file.txt')]")).download();
-
-        //Проверяет, что файл действительно скачан с сервера
-        Assert.assertEquals(report.getName(), "some-file.txt");
-
-        //Выводит в консоль весь путь до файла
-        System.out.println(report + " Путь до файла");
+        WebElement report = driver.findElement(By.xpath("//a[contains(text(),'some-file.txt')]"));
+        report.click();
+        //Ожидание скачивания файла
+        Thread.sleep(5000);
         //Выводит в консоль только название файла
-        System.out.println(report.getName()+" Имя файла");
-
-        //Удаляет папку downloads с загруженным файлом text.txt
+        System.out.println(report.getText()+" Имя файла");
+        //Проверяет, что нужный файл скачан с сервера
+        Assert.assertTrue(report.getText().equals("some-file.txt"));
+        //Удаляет папку downloads с загруженным файлом some-file.txt
         FileUtils.deleteDirectory(new File("build/downloads"));
+        //Закрывает драйвер
+        driver.quit();
     }
 
     @Step("Upload: Загрузка файла на сервер")

@@ -33,7 +33,7 @@ public class Download {
 
         File report = $(By.xpath("//a[contains(text(),'some-file.txt')]")).download();
 
-        //Проверяет, что файл действительно скачан с сервера
+        //Проверяет, что нужный файл скачан с сервера
         Assert.assertEquals(report.getName(), "some-file.txt");
 
         //Выводит в консоль весь путь до файла

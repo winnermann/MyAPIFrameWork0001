@@ -14,12 +14,14 @@ public class TheInternetHerokuAppSeleniumUITest {
     @Description(value = "UI")
     @Epic("Функциональные тесты Selenium")
     @Severity(value = SeverityLevel.NORMAL)
-    public void testCases() throws IOException {
+    public void testCases() throws IOException, InterruptedException {
 //        TheInternetHerokuAppSeleniumUI.basicAuth();
 //        TheInternetHerokuAppSeleniumUI.checkBox();
 //        TheInternetHerokuAppSeleniumUI.digestAuthentication();
 //        TheInternetHerokuAppSeleniumUI.drugAndDrop();
-        TheInternetHerokuAppSeleniumUI.drugAndDropJavaScript();
+        //TheInternetHerokuAppSeleniumUI.drugAndDropJavaScript();
+        //TheInternetHerokuAppSeleniumUI.dropDownMenu();
+        TheInternetHerokuAppSeleniumUI.downloadFile();
 
     }
 }
