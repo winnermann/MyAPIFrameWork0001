@@ -18,10 +18,11 @@ public class TheInternetHerokuAppSeleniumUITest {
 //        TheInternetHerokuAppSeleniumUI.basicAuth();
 //        TheInternetHerokuAppSeleniumUI.checkBox();
 //        TheInternetHerokuAppSeleniumUI.digestAuthentication();
-//        TheInternetHerokuAppSeleniumUI.drugAndDrop();
-        //TheInternetHerokuAppSeleniumUI.drugAndDropJavaScript();
-        //TheInternetHerokuAppSeleniumUI.dropDownMenu();
-        TheInternetHerokuAppSeleniumUI.downloadFile();
+//        //TheInternetHerokuAppSeleniumUI.drugAndDrop();
+//        TheInternetHerokuAppSeleniumUI.drugAndDropJavaScript();
+//        TheInternetHerokuAppSeleniumUI.dropDownMenu();
+//        TheInternetHerokuAppSeleniumUI.downloadFile();
+        TheInternetHerokuAppSeleniumUI.uploadFile();
 
     }
 }

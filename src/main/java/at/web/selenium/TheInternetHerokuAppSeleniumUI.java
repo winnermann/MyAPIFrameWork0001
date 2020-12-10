@@ -1,6 +1,5 @@
 package at.web.selenium;
 
-import com.codeborne.selenide.Configuration;
 import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -17,9 +16,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
-
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.*;
 
 public class TheInternetHerokuAppSeleniumUI {
     private static Object driver;
@@ -284,19 +280,23 @@ public class TheInternetHerokuAppSeleniumUI {
     }
 
     @Step("Upload: Загрузка файла на сервер")
-    public static void uploadFile(){
+    public static void uploadFile() throws InterruptedException {
         //Открыть браузер
-        System.setProperty("selenide.browser", "chrome");
-        Configuration.browser = "chrome";
-        Configuration.startMaximized = true;
-        Configuration.timeout = 6000;
-        open("http://the-internet.herokuapp.com/upload");
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+        ChromeDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://the-internet.herokuapp.com/upload");
         //Загрузить файл
-        $("body input").uploadFile(new File("upload/uploadFile.txt"));
+        WebElement uploadField = driver.findElementByCssSelector("body input");
+        uploadField.sendKeys("D:\\SpringStudy\\MyAPIFrameWork0001\\upload\\uploadFile.txt");
+        //Ожидание загрузки файла
+        Thread.sleep(2000);
         //Нажать кнопку подтвердить
-        element(By.id("file-submit")).click();
-        //Проверить что файл загружен
-        element(By.id("uploaded-files")).shouldHave(text("uploadFile.txt"));
+        WebElement submitButton = driver.findElement(By.id("file-submit"));
+        submitButton.click();
+        //Закрывает драйвер
+        driver.close();
     }
 
 }
