@@ -1,5 +1,6 @@
 package at.api;
 
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.UrlDecoder;
 import io.restassured.response.Response;
@@ -24,6 +25,7 @@ public class DownloadFileUsingRestAssured {
      */
 
     @Test
+    @Step("Загрузить файл")
     public static void canDownloadFilesWithRestAssured() throws IOException {
 
         // By default this is going to be a subfolder in your project, you can change this to an
