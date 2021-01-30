@@ -1,6 +1,7 @@
 package at.tests;
 
 import at.api.DownloadFileUsingRestAssured;
+import at.api.DownloadFileUsingRestAssuredHerokuAppAPI;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;
@@ -18,5 +19,6 @@ public class DownloadFileUsingRestAssuredTest {
 
     public void testCases() throws IOException {
         DownloadFileUsingRestAssured.canDownloadFilesWithRestAssured();
+        DownloadFileUsingRestAssuredHerokuAppAPI.canDownloadFilesWithRestAssured();
     }
 }
