@@ -40,29 +40,19 @@ public class DownloadFileUsingRestAssuredHerokuAppAPI {
         Map<String, String> headers = new HashMap();
         //cookies.put("X-AUTH-CODE", Secret.AUTH_CODE_HEADER);
 
-        // if your url was extracted from a json respose in another message then you might need to decode it first
-        // to make sure it is a completely valid URL e.g. doesn't have any \u0026 type values
-        //String urlToDownload="https://avatars3.githubusercontent.com/u/2621217?s=40&v=4";
-
-        //Пробба
+        //Схраняем url к файлу в переменную urlToDownload
         String urlToDownload="http://the-internet.herokuapp.com/download/teamWork1.png";
         urlToDownload = UrlDecoder.urlDecode(urlToDownload, Charset.defaultCharset(), false);
-
-
-        // Sometimes I add a timestamp to the file e.g.
-        //String downloadFileName = "downloadedFile_" + System.currentTimeMillis() + "_.txt";
-
-        // Sometimes I add a GUID to the file e.g.
-        //String downloadFileName = "downloadedFile_" + UUID.randomUUID() + "_.txt";
 
         // the point is, control the filename so you know what you are downloading
         String downloadFileName = "teamWork1.png";
 
 
-        // For the purpose of the test, if the file already exists then I will delete it
-
+        //Проверяет существует ли файл teamWork1.png и удаляет, если существует
         File checkDownloaded = new File(outputPath.getPath(), downloadFileName);
+        //Проверяет существует ли файл teamWork1.png
         if(checkDownloaded.exists()) {
+            //удаляет файл teamWork1.png
             checkDownloaded.delete();
         }
 
